@@ -1,5 +1,5 @@
 import HttpMitmProxy from 'http-mitm-proxy';
-const proxy = HttpMitmProxy();
+import { DateTime } from 'luxon';
 
 // settings
 const port = 8081;
@@ -11,12 +11,19 @@ const credentials = Buffer.from(`${username}:${password}`).toString('base64');
 const expectedProxyAuthorization = `Basic ${credentials}`;
 const proxyAuthenticate = 'Basic realm="MITM Proxy"';
 
+// utils
+const utcNow = () => DateTime.utc().toISO();
+
+// configure & start the proxy
+const proxy = HttpMitmProxy();
+
 proxy.onError((ctx, err) => {
   console.error('proxy error:', err);
 });
 
 proxy.onRequest((ctx, callback) => {
-  console.log(`${ctx.clientToProxyRequest.method} ${ctx.isSSL ? 'https' : 'http'}://${ctx.clientToProxyRequest.headers.host}${ctx.clientToProxyRequest.url}`);
+  const url = `${ctx.isSSL ? 'https' : 'http'}://${ctx.clientToProxyRequest.headers.host}${ctx.clientToProxyRequest.url}`;
+  console.log(`[${utcNow()}] \u001b[36m"${ctx.clientToProxyRequest.method} ${url}"\u001b[0m`);
 
   if (ctx.clientToProxyRequest.headers['proxy-authorization'] === expectedProxyAuthorization) {
     return callback();
@@ -31,4 +38,4 @@ proxy.onRequest((ctx, callback) => {
 });
 
 proxy.listen({ port });
-console.log(`listening port ${port}`);
+console.log(`[${utcNow()}] \u001b[1mlistening port ${port}\u001b[0m`);
