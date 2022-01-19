@@ -11,5 +11,8 @@
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/rsky/x-node-http-mitm-proxy-auth/issues"
+  },
+  "dependencies": {
+    "http-mitm-proxy": "^0.9.0"
   }
 }
