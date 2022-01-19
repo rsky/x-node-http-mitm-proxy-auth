@@ -1,5 +1,5 @@
-const Proxy = require('http-mitm-proxy');
-const proxy = Proxy();
+import HttpMitmProxy from 'http-mitm-proxy';
+const proxy = HttpMitmProxy();
 
 // settings
 const port = 8081;
@@ -31,3 +31,4 @@ proxy.onRequest((ctx, callback) => {
 });
 
 proxy.listen({ port });
+console.log(`listening port ${port}`);
