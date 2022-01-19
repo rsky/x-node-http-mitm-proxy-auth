@@ -4,8 +4,9 @@
   "description": "Example of HTTP Proxy Authentication with node-http-mitm-proxy",
   "main": "index.js",
   "scripts": {
-    "start": "node -r esbuild-register index.ts",
-    "watch": "nodemon -x 'npm start' -w index.ts"
+    "start": "concurrently -n w: 'npm:watch-*'",
+    "proxy": "node -r esbuild-register index.ts",
+    "watch-proxy": "nodemon -x 'npm run proxy' -w index.ts"
   },
   "repository": "https://github.com/rsky/x-node-http-mitm-proxy-auth",
   "author": "Ryusuke Sekiyama <rsky0711@gmail.com>",
@@ -20,6 +21,7 @@
   "devDependencies": {
     "@types/luxon": "^2.0.9",
     "@types/node": "^17.0.10",
+    "concurrently": "^7.0.0",
     "esbuild": "^0.14.11",
     "esbuild-register": "^3.3.2",
     "nodemon": "^2.0.15",
